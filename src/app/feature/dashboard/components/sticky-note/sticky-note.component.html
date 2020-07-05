@@ -1,0 +1,9 @@
+<form [formGroup]="stickyNoteForm" class="h-100">
+  <mat-form-field appearance="outline">
+    <mat-label>Suited Title...</mat-label>
+    <input (change)="valueChanged()" formControlName="title" matInput placeholder="Placeholder">
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    <mat-hint>The content</mat-hint>
+  </mat-form-field>
+    <textarea (change)="valueChanged()" style="height: 60%; width: 100%;" class="px-1" formControlName="content"></textarea>
+</form>

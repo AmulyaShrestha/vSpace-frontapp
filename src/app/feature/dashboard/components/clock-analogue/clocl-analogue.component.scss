@@ -1,0 +1,217 @@
+// i guess this serif will do, consistent char dimensions.
+@import url(https://fonts.googleapis.com/css?family=Old+Standard+TT);
+
+// clock size
+$clock-di: 400px; // change this for gobal size
+// timing
+$second: 150ms; // change this to speed it up
+$minute: $second * 60;
+$hour: $minute * 60;
+$transition: $second * 0.2;
+// fonts
+$font: "Old Standard TT";
+$big-font: $clock-di * 0.135;
+$small-font: $clock-di * 0.07;
+$char-width: $clock-di * 0.0818181;
+
+// background needs to be its own element because of codepen bodies?
+.bg {
+  background-color: #000;
+  $vin-dark: rgba(255,255,255,0);
+  $vin-light: transparentize(#f1c8ab,0.8);
+  background-image: radial-gradient(center, $vin-light, $vin-dark);
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+}
+
+// the clock face
+.clock {
+  position: absolute;
+  display: block;
+  height: $clock-di; width: $clock-di;
+  left: 50%; top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 50%;
+  background-color: #383434;
+  color: #f1c8ab;
+  font-family: $font;
+  // the perimeter of the clock face
+  box-shadow:
+    inset 0px 0px 12px 0px #111111,
+    0px 0px 0px $clock-di * 0.022 #404241,
+    0px 0px 0px $clock-di * 0.066 #202021,
+    0px 0px 0px $clock-di * 0.084 #edc7ae,
+    0px 0px 0px $clock-di * 0.092 #b6a091,
+    0px 0px 0px $clock-di * 0.111 #edc7ae;
+
+  // inset shadow on opening
+  &::before {
+    content: "";
+    width: $clock-di * 0.175;
+    height: $clock-di * 0.2916666667;
+    border-radius: 8%;
+    box-shadow: inset 0px 0px 8px rgba(0,0,0,0.4);
+    position: absolute;
+    left: calc(50% - #{$clock-di * 0.175 / 2});
+    top: $clock-di * 0.04;
+  }
+  // subtle gradient overlay
+  &::after {
+    content: "";
+    $grad-offset: 0.23;
+    $grad-di: $clock-di * (1 + $grad-offset);
+    width: $grad-di; height: $grad-di;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at top center, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 100%);
+    position: absolute;
+    top: $clock-di * $grad-offset / -2;
+    left: $clock-di * $grad-offset / -2;
+  }
+  // svg img mask
+  img {
+    display: block; position: absolute;
+    height: $clock-di; width: $clock-di;
+    z-index: 99;
+    opacity: 0.65;
+  }
+}
+
+// each set of numbers
+figure {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  margin: 0;
+  text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
+  // a plate
+  /*
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      background-color: transparentize(#383434,0.3);
+      border-radius: 50%;
+      box-shadow:
+        0px 0px 0px 2px darken(desaturate(#f1c8ab,30%),20%),
+        0px 0px 8px rgba(0,0,0,0.2);
+    }
+  */
+  // each number
+  span {
+    display: block; position: absolute;
+    width: $char-width;
+    left: calc(50% + #{$char-width / -2});
+    transform-origin: 50% 100%;
+  }
+  // using content attributes for numbers
+  span::before {
+    content: attr(val);
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    text-align: center;
+    line-height: 1;
+  }
+}
+
+// must create unique animation per set of numbers
+@mixin animation($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// mixin for each set of numbers
+@mixin rotation($di, $font, $count, $name, $rotation-time, $direction) {
+  width: $di; height: $di;
+  font-size: $font;
+  animation: $name $rotation-time linear infinite;
+  // steps() animations do not allow for transitions between steps?
+  // math to the rescue!
+  $percentage-change: $transition / $rotation-time * 100;
+  @if $direction == "CC" {
+    @include animation($name) {
+      0% { transform: rotate(360deg); }
+      @for $i from 1 through $count {
+        #{ $i / $count * 100 - $percentage-change }% {
+          transform: rotate(360 - ($i - 1) / $count * 360deg);
+        }
+        #{ $i / $count * 100 }% {
+          transform: rotate(360 - ($i / $count) * 360deg);
+        }
+      }
+    }
+  } @else {
+    @include animation($name) {
+      0% { transform: rotate(0deg); }
+      @for $i from 1 through $count {
+        #{ $i / $count * 100 - $percentage-change }% {
+          transform: rotate(($i - 1) / $count * 360deg);
+        }
+        #{ $i / $count * 100 }% {
+          transform: rotate(($i / $count) * 360deg);
+        }
+      }
+    }
+  }
+  span { height: $di / 2; }
+  // rotate each number parent
+  @for $i from 1 through $count {
+    @if $direction == "CC" {
+      span:nth-child(#{$i}) {
+        transform: rotate(360deg * (($i - 1) / $count) );
+      }
+    } @else {
+      span:nth-child(#{$i}) {
+        transform: rotate(360deg * (($i) / $count) );
+      }
+    }
+  }
+  // a plate
+  /*
+    &::before {
+      top: $font; right: $font; bottom: $font; left: $font;
+    }
+  */
+}
+
+
+// diameters for each group of numbers
+$big-loop: $clock-di * 0.85;
+$mid-loop: $clock-di * 0.75;
+$tiny-loop: $clock-di * 0.55;
+// how far down we want the numbers to be
+$off-top: 5%;
+
+// shared top values for each increment
+.hour-ten, .hour { top: $off-top; }
+.min-ten,  .min  { top: calc(#{ $off-top } + #{ $small-font }); }
+.sec-ten,  .sec  { top: calc(#{ $off-top } + #{ $small-font + $big-font }); }
+
+// calling the mixin and left positions for each group
+.hour-ten {
+  @include rotation( $tiny-loop, $small-font, 4, "hour-ten", 4 * ($hour*3), "C" );
+  left: calc(50% - #{ $tiny-loop/2 + $char-width/2 });
+}
+.hour {
+  @include rotation( $big-loop, $small-font, 12, "hour", 12 * $hour, "CC" );
+  left: calc(50% - #{ $big-loop/2 - $char-width/2 });
+}
+
+.min-ten {
+  @include rotation( $tiny-loop, $big-font, 6, "min-ten", 6 * ($minute*10), "C" );
+  left: calc(50% - #{ $tiny-loop/2 + $char-width/2 });
+}
+.min {
+  @include rotation( $mid-loop, $big-font, 10, "min", 10 * $minute, "CC" );
+  left: calc(50% - #{ $mid-loop/2 - $char-width/2 });
+}
+
+.sec-ten {
+  @include rotation( $tiny-loop, $small-font, 6, "sec-ten", 6 * ($second*10), "C" );
+  left: calc(50% - #{ $tiny-loop/2 + $char-width/2 });
+}
+.sec {
+  @include rotation( $tiny-loop, $small-font, 10, "sec", 10 * $second, "CC" );
+  left: calc(50% - #{ $tiny-loop/2 - $char-width/2 });
+}
