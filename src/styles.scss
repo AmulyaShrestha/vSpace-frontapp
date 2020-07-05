@@ -1,0 +1,23 @@
+@import "./app/@theme/theme";
+@include mat-core();
+@include angular-material-theme($app-theme);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+a {
+  text-decoration-color: mat-color($app-primary);
+  color: mat-color($app-primary);
+}
+
+button:focus, button:active:focus, button.active:focus {
+  outline: none !important;
+}
+
+.fixed-bottom-sheet-width {
+  width: 50vw;
+}
+
+.press-2p {
+  font-family: 'Press Start 2P', cursive;
+}
