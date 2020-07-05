@@ -1,0 +1,75 @@
+<div class="nav-body">
+
+  <button [matMenuTriggerFor]="menu" style="left: 10px" mat-fab color="success">
+    <mat-icon>apps</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onSelectHomeDashboard()">
+      <mat-icon>voicemail</mat-icon>
+      <span>Home</span>
+    </button>
+    <button mat-menu-item (click)="onSelectStickyNotes()">
+      <mat-icon>dialpad</mat-icon>
+      <span>Sticky notes</span>
+    </button>
+    <button mat-menu-item (click)="logOut()">
+      <mat-icon>power</mat-icon>
+      <span>Log out</span>
+    </button>
+  </mat-menu>
+
+  <button (click)="openAddNoteModal()"
+          *ngIf="isStickyNoteMode"
+          style="left: 80px"
+          matTooltip="Save current state" color="success" mat-fab>
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <button (click)="onClick_SaveUserDashboardsToLocalStorage()"
+    matTooltip="Save current state" class="float-right" color="success" mat-fab>
+    <mat-icon>save</mat-icon>
+  </button>
+
+  <div class="nav" *ngIf="!isStickyNoteMode">
+    <input type="checkbox">
+    <span></span>
+    <span></span>
+    <div class="menu">
+      <li class="material-icons" (click)="addAnalogue()">watch<a>Analogue</a></li>
+      <li class="material-icons" (click)="addCoronaWorldMap()">coronavirus<a>World</a></li>
+      <li class="material-icons" (click)="addCalendar()">insert_invitation<a>Calendar</a></li>
+      <li class="material-icons" (click)="addYouTube()">play_circle_filled<a>Youtube</a></li>
+      <li class="material-icons" (click)="addCoronaWorldMap()">multiline_chart<a>Corona</a></li>
+      <li class="material-icons" (click)="addWeather()">nights_stay<a>Weather</a></li>
+      <li class="material-icons" (click)="addCoronaTable()">coronavirus<a>Table</a></li>
+    </div>
+  </div>
+
+</div>
+
+<div class="gridster-container">
+  <gridster [options]="options">
+    <gridster-item *ngFor="let widget of dashboard; let i = index" [item]="widget">
+      <div class="drag-handler widget-header">
+        <div class="item-buttons widget-header-buttons">
+          <div class="float-left header-margin-left"></div>
+          <h3 *ngIf="widget.name">{{widget.name}}</h3></div>
+        <div class="float-right header-margin-right">
+          <h4>
+            <a (mousedown)="onClick_configureItem($event, widget)"
+               class="widget-header-btn"><mat-icon class="pt-2 mr-1">settings</mat-icon></a>
+
+            <a (mousedown)="onClick_removeItem($event, widget)"
+               class="widget-header-btn"><mat-icon class="pt-2">cancel</mat-icon></a>
+          </h4>
+        </div>
+      </div>
+      <div class="gridster-item-content" style="height: 100%; margin: 5px">
+        <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
+                     [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i}"
+                     [ndcDynamicOutputs]="outputs"></ndc-dynamic>
+      </div>
+    </gridster-item>
+  </gridster>
+</div>
+
