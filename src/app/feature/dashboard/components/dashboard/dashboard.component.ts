@@ -9,13 +9,10 @@ import {CoronaWorldTableComponent} from '../corona-world-table/corona-world-tabl
 import {WeatherComponent} from '../weather/weather.component';
 import {NavService} from '../../../../@theme/service/nav.service';
 import {StickyNoteComponent} from '../sticky-note/sticky-note.component';
-import {MatDialog} from '@angular/material/dialog';
-import {AddNotesComponent} from '../add-notes/add-notes.component';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../../../@core/authentication.service';
 import {User} from '../../../../auth/model/User';
 import {ToastrService} from 'ngx-toastr';
-import {keyframes} from '@angular/animations';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToDoComponent} from '../to-do/to-do.component';
 
