@@ -28,4 +28,4 @@ jobs:
       
     # Runs a single command using the runners shell
     - name: Angular build
-      run: ng build --prod
+      run: node --max_old_space_size=8192  ./node_modules/@angular/cli/bin/ng build --prod
