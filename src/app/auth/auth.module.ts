@@ -5,9 +5,10 @@ import {CoreModule} from '../@core/core.module';
 import {ThemeModule} from '../@theme/theme.module';
 import {RegisterComponent} from './register/register.component';
 import { RegisterClientComponent } from './register/register-client/register-client.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
-  declarations: [AuthBaseComponent, RegisterComponent, RegisterClientComponent],
+  declarations: [AuthBaseComponent, RegisterComponent, RegisterClientComponent, ForgotPasswordComponent],
   imports: [
     CoreModule,
     ThemeModule,

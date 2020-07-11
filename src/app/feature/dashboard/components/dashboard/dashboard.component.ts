@@ -50,7 +50,6 @@ export class DashboardComponent implements OnInit {
 
   constructor(private dashboardService: DashboardService,
               public navService: NavService,
-              public dialog: MatDialog,
               private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthenticationService,

@@ -5,6 +5,8 @@ import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {AuthenticationService} from '../../@core/authentication.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import {MatDialog} from '@angular/material/dialog';
+import {ForgotPasswordComponent} from '../forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-auth-base',
@@ -18,6 +20,7 @@ export class AuthBaseComponent implements OnInit {
               private matBottomSheet: MatBottomSheet,
               private authService: AuthenticationService,
               private router: Router,
+              private dialog: MatDialog,
               private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -35,6 +38,10 @@ export class AuthBaseComponent implements OnInit {
     this.matBottomSheet.open(RegisterComponent, {
       panelClass: 'fixed-bottom-sheet-width'
     });
+  }
+
+  openForgotPasswordModal() {
+    const dialogRef = this.dialog.open(ForgotPasswordComponent);
   }
 
   onSubmit() {
