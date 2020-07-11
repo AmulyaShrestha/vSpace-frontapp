@@ -18,7 +18,7 @@
     </button>
   </mat-menu>
 
-  <button (click)="openAddNoteModal()"
+  <button (click)="openUpdatedStickyModal()"
           *ngIf="isStickyNoteMode"
           style="left: 80px"
           matTooltip="Save current state" color="success" mat-fab>
@@ -26,7 +26,7 @@
   </button>
 
   <button (click)="onClick_SaveUserDashboardsToLocalStorage()"
-    matTooltip="Save current state" class="float-right" color="success" mat-fab>
+          matTooltip="Save current state" class="float-right" color="success" mat-fab>
     <mat-icon>save</mat-icon>
   </button>
 
@@ -47,29 +47,133 @@
 
 </div>
 
-<div class="gridster-container">
-  <gridster [options]="options">
-    <gridster-item *ngFor="let widget of dashboard; let i = index" [item]="widget">
-      <div class="drag-handler widget-header">
-        <div class="item-buttons widget-header-buttons">
-          <div class="float-left header-margin-left"></div>
-          <h3 *ngIf="widget.name">{{widget.name}}</h3></div>
-        <div class="float-right header-margin-right">
-          <h4>
-            <a (mousedown)="onClick_configureItem($event, widget)"
-               class="widget-header-btn"><mat-icon class="pt-2 mr-1">settings</mat-icon></a>
+<div class="h-100 w-100" style="background: #4a4163">
 
-            <a (mousedown)="onClick_removeItem($event, widget)"
-               class="widget-header-btn"><mat-icon class="pt-2">cancel</mat-icon></a>
-          </h4>
+  <mat-card class="container mb-4 pt-0" *ngIf="stickyNoteModalOpened">
+    <mat-card-content>
+      <mat-tab-group mat-stretch-tabs dynamicHeight>
+        <mat-tab label="Sticky Note">
+          <div class="p-4">
+            <h1 mat-dialog-title>New note</h1>
+            <div mat-dialog-content>
+              <form [formGroup]="stickyNoteForm" class="h-100">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Suited Title...</mat-label>
+                  <input formControlName="title" matInput placeholder="Placeholder">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-hint>The content</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Content...</mat-label>
+                  <textarea rows="7" matInput formControlName="content"></textarea>
+                </mat-form-field>
+              </form>
+            </div>
+            <div class="float-right">
+              <button (click)="addStickyNote()" class="mb-2"
+                      matTooltip="Save note" color="primary" mat-fab>
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <div class="float-right">
+              <button (click)="closeStickyNoteModal()" class="mb-2 mr-2"
+                      matTooltip="Close this modal" color="warn" mat-fab>
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="To-Do List">
+          <div class="p-4">
+            <h1 mat-dialog-title>Add To-Dos</h1>
+            <div mat-dialog-content>
+              <form [formGroup]="toDoForm" class="h-100">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Suited Title...</mat-label>
+                  <input formControlName="title" matInput placeholder="Placeholder">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-hint>The List</mat-hint>
+                </mat-form-field>
+                <ng-container *ngFor="let toDo of toDoForm.get('toDoList')['controls']; let i = index"
+                formArrayName="toDoList">
+                  <div [formGroupName]="i" class="row">
+                    <div class="col-md-11">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Your task to be completed</mat-label>
+                        <input formControlName="toDoContent" matInput placeholder="Placeholder">
+                        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-1">
+                      <button (click)="removeToDoField(i)"
+                              matTooltip="Remove ToDo" color="warn" mat-fab>
+                        <mat-icon>remove</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+                <!--addition reference field-->
+                <div class="row">
+                  <div class="col-md-11">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Your task to be completed</mat-label>
+                      <input #toDoContent matInput placeholder="Placeholder">
+                      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-1">
+                    <button (click)="addFieldForToDo(toDoContent)"
+                            matTooltip="Add ToDo" color="accent" mat-fab>
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!--Footer for To-Do-->
+            <div class="text-center">
+              <button (click)="addToDoList()" class="mr-2"
+                      matTooltip="Save current state" color="primary" mat-fab>
+                <mat-icon>add</mat-icon>
+              </button>
+              <button (click)="closeStickyNoteModal()"
+                      matTooltip="Close this modal" color="warn" mat-fab>
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="gridster-container">
+    <gridster [options]="options">
+      <gridster-item *ngFor="let widget of dashboard; let i = index" [item]="widget">
+        <div class="drag-handler widget-header">
+          <div class="item-buttons widget-header-buttons">
+            <div class="float-left header-margin-left"></div>
+            <h3 *ngIf="widget.name">{{widget.name}}</h3></div>
+          <div class="float-right header-margin-right">
+            <h4>
+              <a (mousedown)="onClick_configureItem($event, widget)"
+                 class="widget-header-btn"><mat-icon class="pt-2 mr-1">settings</mat-icon></a>
+
+              <a (mousedown)="onClick_removeItem($event, widget)"
+                 class="widget-header-btn"><mat-icon class="pt-2">cancel</mat-icon></a>
+            </h4>
+          </div>
         </div>
-      </div>
-      <div class="gridster-item-content" style="height: 100%; margin: 5px">
-        <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
-                     [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i}"
-                     [ndcDynamicOutputs]="outputs"></ndc-dynamic>
-      </div>
-    </gridster-item>
-  </gridster>
+        <div class="gridster-item-content" style="height: 100%; margin: 5px">
+          <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
+                       [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i,
+                       toDoObject: {title: widget.toDoTitle, toDoList: widget.toDoList}, activeWidgetIndex: i}"
+                       [ndcDynamicOutputs]="outputs"></ndc-dynamic>
+        </div>
+      </gridster-item>
+    </gridster>
+  </div>
 </div>
 

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, TemplateRef} from '@angular/core';
 import {DashboardService} from '../../services/dashboard.service';
 import {DisplayGrid, GridsterConfig, GridsterItem} from 'angular-gridster2';
 import {NepaliCalendarComponent} from '../nepali-calendar/nepali-calendar.component';
@@ -16,6 +16,8 @@ import {AuthenticationService} from '../../../../@core/authentication.service';
 import {User} from '../../../../auth/model/User';
 import {ToastrService} from 'ngx-toastr';
 import {keyframes} from '@angular/animations';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToDoComponent} from '../to-do/to-do.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +33,10 @@ export class DashboardComponent implements OnInit {
     valueChange: (emittedObject) => {
       this.dashboard[emittedObject.activeWidgetIndex].title = emittedObject.noteObject.title;
       this.dashboard[emittedObject.activeWidgetIndex].content = emittedObject.noteObject.content;
+    },
+    toDoValueChange: (emittedObject) => {
+      this.dashboard[emittedObject.activeWidgetIndex].toDoTitle = emittedObject.toDoObject.title;
+      this.dashboard[emittedObject.activeWidgetIndex].toDoList = emittedObject.toDoObject.toDoList;
     }
   };
   private resizeEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -38,10 +44,14 @@ export class DashboardComponent implements OnInit {
 
   activeUserId;
   isStickyNoteMode = false;
+  stickyNoteModalOpened = false;
+  stickyNoteForm: FormGroup;
+  toDoForm: FormGroup;
 
   constructor(private dashboardService: DashboardService,
               public navService: NavService,
               public dialog: MatDialog,
+              private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthenticationService,
               private toastr: ToastrService) {
@@ -94,6 +104,17 @@ export class DashboardComponent implements OnInit {
   public onSelectStickyNotes(): void {
     this.isStickyNoteMode = true;
     this.dashboard = this.dashboardService.getUserDashBoards(this.activeUserId)[1].widgets;
+  }
+
+  buildStickyNoteAndToDoForm() {
+    this.stickyNoteForm = this.formBuilder.group({
+      title: [undefined, Validators.required],
+      content: [undefined, Validators.required]
+    });
+    this.toDoForm = this.formBuilder.group({
+      title: [undefined, Validators.required],
+      toDoList: this.formBuilder.array([], Validators.required),
+    });
   }
 
   public addCalendar(): void {
@@ -174,7 +195,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  openAddNoteModal() {
+  /*openAddNoteModal() {
     const dialogRef = this.dialog.open(AddNotesComponent);
     dialogRef.afterClosed().subscribe(data => {
       this.dashboard.push({
@@ -190,21 +211,69 @@ export class DashboardComponent implements OnInit {
         content: data.content
       });
     });
-  }
+  }*/
 
   public addStickyNote(): void {
-    this.dashboard.push({
-      id: '7',
-      name: 'Note',
-      componentName: 'sticky-notes',
-      componentType: StickyNoteComponent,
-      cols: 2,
-      rows: 2,
-      y: 0,
-      x: 0,
-      title: 'asd',
-      content: 'noteObject.content'
-    });
+    if (this.stickyNoteForm.valid) {
+      this.dashboard.push({
+        id: '7',
+        name: 'Note',
+        componentName: 'sticky-notes',
+        componentType: StickyNoteComponent,
+        cols: 2,
+        rows: 2,
+        y: 0,
+        x: 0,
+        title: this.stickyNoteForm.get('title').value,
+        content: this.stickyNoteForm.get('content').value
+      });
+      this.stickyNoteModalOpened = false;
+      this.stickyNoteForm = undefined;
+    }
+  }
+
+  public addToDoList(): void {
+    if (this.toDoForm.valid) {
+      this.dashboard.push({
+        id: '8',
+        name: 'To-Dos',
+        componentName: 'toDo',
+        componentType: ToDoComponent,
+        cols: 2,
+        rows: 2,
+        y: 0,
+        x: 0,
+        toDoTitle: this.toDoForm.get('title').value,
+        toDoList: JSON.stringify(this.toDoForm.get('toDoList').value)
+      });
+      this.stickyNoteModalOpened = false;
+      this.stickyNoteForm = undefined;
+    }
+  }
+
+  openUpdatedStickyModal() {
+    this.buildStickyNoteAndToDoForm();
+    this.stickyNoteModalOpened = true;
+  }
+
+  closeStickyNoteModal() {
+    this.stickyNoteModalOpened = false;
+    this.stickyNoteForm = undefined;
+  }
+
+  addFieldForToDo(toDoContent) {
+    const control = this.toDoForm.controls.toDoList as FormArray;
+    control.push(
+      this.formBuilder.group({
+        toDoContent: [toDoContent.value, Validators.required],
+        checked: false
+      })
+    );
+    toDoContent.value = '';
+  }
+
+  removeToDoField(index) {
+    (this.toDoForm.get('toDoList') as FormArray).removeAt(index);
   }
 
   public onClick_SaveUserDashboardsToLocalStorage(): void {
