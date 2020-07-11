@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterComponent} from '../register/register.component';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
@@ -11,8 +11,7 @@ import {ForgotPasswordComponent} from '../forgot-password/forgot-password.compon
 @Component({
   selector: 'app-auth-base',
   templateUrl: './auth-base.component.html',
-  styleUrls: ['./auth-base.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./auth-base.component.scss']
 })
 export class AuthBaseComponent implements OnInit {
   loginForm: FormGroup;
