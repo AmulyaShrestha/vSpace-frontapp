@@ -25,3 +25,7 @@ jobs:
     # Runs a single command using the runners shell
     - name: Install dependencies
       run: npm install --quiet
+      
+    # Runs a single command using the runners shell
+    - name: Angular build
+      run: ng build --prod
