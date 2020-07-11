@@ -46,7 +46,7 @@ export class ToDoComponent implements OnInit {
     };
     const emittedObject = {
       toDoObject: emitToDoObject,
-      activeWidgetIndex: this.activeWidgetIndexForToDo
+      activeWidgetIndexForToDo: this.activeWidgetIndexForToDo
     };
     this.toDoValueChange.emit(emittedObject);
   }
