@@ -20,6 +20,7 @@ import {WeatherComponent} from './components/weather/weather.component';
 import {StickyNoteComponent} from './components/sticky-note/sticky-note.component';
 import {CoreModule} from '../../@core/core.module';
 import { AddNotesComponent } from './components/add-notes/add-notes.component';
+import { ToDoComponent } from './components/to-do/to-do.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AddNotesComponent } from './components/add-notes/add-notes.component';
     NepaliCalendarComponent,
     WeatherComponent,
     StickyNoteComponent,
-    AddNotesComponent],
+    AddNotesComponent,
+    ToDoComponent],
   imports: [
     CommonModule,
     ThemeModule,

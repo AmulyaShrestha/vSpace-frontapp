@@ -9,6 +9,7 @@ import {CoronaWorldTableComponent} from '../components/corona-world-table/corona
 import {WeatherComponent} from '../components/weather/weather.component';
 import {User} from '../../../auth/model/User';
 import {StickyNoteComponent} from '../components/sticky-note/sticky-note.component';
+import {ToDoComponent} from '../components/to-do/to-do.component';
 
 interface IDashboardService {
   getUserDashBoards(user: User): Array<Dashboard>;
@@ -123,6 +124,9 @@ export class DashboardService implements IDashboardService {
         }
         if (widget.componentName === 'sticky-notes') {
           widget.componentType = StickyNoteComponent;
+        }
+        if (widget.componentName === 'toDo') {
+          widget.componentType = ToDoComponent;
         }
       });
     });
@@ -263,6 +267,7 @@ export class DashboardService implements IDashboardService {
       });
       this.userDashboards.set('default', dashBoards);
       localStorage.setItem('userId', 'default');
+      localStorage.setItem('default', JSON.stringify(dashBoards));
     }
   }
 }
