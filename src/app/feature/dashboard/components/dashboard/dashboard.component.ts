@@ -35,8 +35,8 @@ export class DashboardComponent implements OnInit {
       this.dashboard[emittedObject.activeWidgetIndex].content = emittedObject.noteObject.content;
     },
     toDoValueChange: (emittedObject) => {
-      this.dashboard[emittedObject.activeWidgetIndex].toDoTitle = emittedObject.toDoObject.title;
-      this.dashboard[emittedObject.activeWidgetIndex].toDoList = emittedObject.toDoObject.toDoList;
+      this.dashboard[emittedObject.activeWidgetIndexForToDo].toDoTitle = emittedObject.toDoObject.title;
+      this.dashboard[emittedObject.activeWidgetIndexForToDo].toDoList = emittedObject.toDoObject.toDoList;
     }
   };
   private resizeEvent: EventEmitter<any> = new EventEmitter<any>();

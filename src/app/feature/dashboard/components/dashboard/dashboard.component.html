@@ -169,7 +169,7 @@
         <div class="gridster-item-content" style="height: 100%; margin: 5px">
           <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
                        [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i,
-                       toDoObject: {title: widget.toDoTitle, toDoList: widget.toDoList}, activeWidgetIndex: i}"
+                       toDoObject: {title: widget.toDoTitle, toDoList: widget.toDoList}, activeWidgetIndexForToDo: i}"
                        [ndcDynamicOutputs]="outputs"></ndc-dynamic>
         </div>
       </gridster-item>
