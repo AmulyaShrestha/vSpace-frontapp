@@ -8,7 +8,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class ToDoComponent implements OnInit {
   @Input() toDoObject;
-  @Input() activeWidgetIndex;
+  @Input() activeWidgetIndexForToDo;
   @Output() toDoValueChange = new EventEmitter();
   toDoForm: FormGroup;
 
@@ -46,7 +46,7 @@ export class ToDoComponent implements OnInit {
     };
     const emittedObject = {
       toDoObject: emitToDoObject,
-      activeWidgetIndex: this.activeWidgetIndex
+      activeWidgetIndex: this.activeWidgetIndexForToDo
     };
     this.toDoValueChange.emit(emittedObject);
   }
