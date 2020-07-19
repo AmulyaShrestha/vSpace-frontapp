@@ -46,9 +46,7 @@ export class RegisterClientComponent implements OnInit {
 
   onSubmit() {
     this.authService.save(this.registerForm.value).subscribe(res => {
-      console.log(res);
-      let newUser = new User();
-      newUser = res.user;
+      const newUser = res.user;
       this.toastr.success('Successful!', 'User successfully registered');
       localStorage.setItem('userId', res.user._id);
       localStorage.setItem('token', res.token);

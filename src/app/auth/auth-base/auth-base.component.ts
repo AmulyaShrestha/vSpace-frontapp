@@ -15,6 +15,7 @@ import {ForgotPasswordComponent} from '../forgot-password/forgot-password.compon
 })
 export class AuthBaseComponent implements OnInit {
   loginForm: FormGroup;
+  rememberStatus = false;
 
   constructor(private formBuilder: FormBuilder,
               private matBottomSheet: MatBottomSheet,
@@ -27,7 +28,7 @@ export class AuthBaseComponent implements OnInit {
     this.buildForm();
   }
 
-  buildForm() {
+  buildForm = () => {
     this.loginForm = this.formBuilder.group({
       email: [undefined, Validators.required],
       password: [undefined, Validators.required]
@@ -41,8 +42,13 @@ export class AuthBaseComponent implements OnInit {
   }
 
   openForgotPasswordModal() {
-    const dialogRef = this.dialog.open(ForgotPasswordComponent, {
-    });
+    this.dialog.open(ForgotPasswordComponent);
+  }
+
+  continueWithoutLogin() {
+    this.router.navigate(['/detail']).then((() => {
+      this.toastr.success('Welcome Stranger!');
+    }));
   }
 
   onSubmit() {
@@ -50,6 +56,7 @@ export class AuthBaseComponent implements OnInit {
       localStorage.setItem('userId', res.user._id);
       localStorage.setItem('token', res.token);
       localStorage.setItem(res.user._id, res.user.dashboard);
+      localStorage.setItem('rememberStatus', String(this.rememberStatus));
       this.toastr.success('Successful!', `Welcome ${res.user.fullName}`);
       this.router.navigate(['detail']);
     }, error => {

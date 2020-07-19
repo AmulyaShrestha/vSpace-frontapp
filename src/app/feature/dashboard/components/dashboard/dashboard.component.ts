@@ -15,11 +15,39 @@ import {User} from '../../../../auth/model/User';
 import {ToastrService} from 'ngx-toastr';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToDoComponent} from '../to-do/to-do.component';
+// tslint:disable-next-line:max-line-length
+import {NewYorkTimesNewsComponentComponent} from '../advanced-widgets/new-york-times-news-component/new-york-times-news-component.component';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {MatDialog} from '@angular/material/dialog';
+import {UpdateProfileModalComponent} from '../update-profile-modal/update-profile-modal.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger(
+      'inOutAnimation',
+      [
+        transition(
+          ':enter',
+          [
+            style({ height: 0, opacity: 0 }),
+            animate('0.5s ease-out',
+              style({ height: '*', opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ height: '*', opacity: 1 }),
+            animate('0.5s ease-in',
+              style({ height: 0, opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
@@ -40,6 +68,7 @@ export class DashboardComponent implements OnInit {
   private configureEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   activeUserId;
+  activeUser: User = new User();
   isStickyNoteMode = false;
   stickyNoteModalOpened = false;
   stickyNoteForm: FormGroup;
@@ -49,6 +78,7 @@ export class DashboardComponent implements OnInit {
               public navService: NavService,
               private formBuilder: FormBuilder,
               private router: Router,
+              private dialog: MatDialog,
               private authService: AuthenticationService,
               private toastr: ToastrService) {
   }
@@ -70,6 +100,11 @@ export class DashboardComponent implements OnInit {
     };
 
     this.activeUserId = localStorage.getItem('userId');
+    if (this.activeUserId !== 'default') {
+      this.authService.getActiveUser().subscribe((res: User) => {
+        this.activeUser = res;
+      });
+    }
     this.dashboard = this.dashboardService.getUserDashBoards(this.activeUserId)[0].widgets;
   }
 
@@ -119,8 +154,8 @@ export class DashboardComponent implements OnInit {
       name: 'Calendar',
       componentName: 'google-calendar',
       componentType: NepaliCalendarComponent,
-      cols: 2,
-      rows: 2,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -132,8 +167,8 @@ export class DashboardComponent implements OnInit {
       name: 'Clock',
       componentName: 'clock-analogue',
       componentType: CloclAnalogueComponent,
-      cols: 2,
-      rows: 1,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -145,8 +180,8 @@ export class DashboardComponent implements OnInit {
       name: 'YouTube',
       componentName: 'youtube',
       componentType: YoutubeComponent,
-      cols: 2,
-      rows: 2,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -158,8 +193,8 @@ export class DashboardComponent implements OnInit {
       name: 'Corona World Statistics',
       componentName: 'corona-world-map',
       componentType: CoronaWorldMapComponent,
-      cols: 2,
-      rows: 2,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -171,8 +206,8 @@ export class DashboardComponent implements OnInit {
       name: 'Corona World Statistics',
       componentName: 'corona-world-table',
       componentType: CoronaWorldTableComponent,
-      cols: 2,
-      rows: 2,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -184,8 +219,60 @@ export class DashboardComponent implements OnInit {
       name: 'Weather',
       componentName: 'weather',
       componentType: WeatherComponent,
-      cols: 2,
-      rows: 2,
+      cols: 5,
+      rows: 5,
+      y: 0,
+      x: 0,
+    });
+  }
+
+  public addArtNews(): void {
+    this.dashboard.push({
+      id: '7',
+      name: 'Art News',
+      componentName: 'art-news',
+      componentType: NewYorkTimesNewsComponentComponent,
+      cols: 5,
+      rows: 5,
+      y: 0,
+      x: 0,
+    });
+  }
+
+  public addScienceNews(): void {
+    this.dashboard.push({
+      id: '8',
+      name: 'Science News',
+      componentName: 'science-news',
+      componentType: NewYorkTimesNewsComponentComponent,
+      cols: 10,
+      rows: 7,
+      y: 0,
+      x: 0,
+    });
+  }
+
+  public addTopNews(): void {
+    this.dashboard.push({
+      id: '9',
+      name: 'Top 10 News',
+      componentName: 'top-news',
+      componentType: NewYorkTimesNewsComponentComponent,
+      cols: 5,
+      rows: 5,
+      y: 0,
+      x: 0,
+    });
+  }
+
+  public addWorldNews(): void {
+    this.dashboard.push({
+      id: '9',
+      name: 'World News',
+      componentName: 'world-news',
+      componentType: NewYorkTimesNewsComponentComponent,
+      cols: 5,
+      rows: 5,
       y: 0,
       x: 0,
     });
@@ -252,7 +339,8 @@ export class DashboardComponent implements OnInit {
     this.stickyNoteModalOpened = true;
   }
 
-  closeStickyNoteModal() {
+  closeStickyNoteModal(elementRef) {
+    console.log('Dynamic height of the modal', elementRef.offsetHeight);
     this.stickyNoteModalOpened = false;
     this.stickyNoteForm = undefined;
   }
@@ -287,6 +375,12 @@ export class DashboardComponent implements OnInit {
       });
     }, error => {
       this.toastr.error('Failed');
+    });
+  }
+
+  openUpdateProfileModal() {
+    const dialogRef = this.dialog.open(UpdateProfileModalComponent, {
+      data: this.activeUser
     });
   }
 

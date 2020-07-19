@@ -8,8 +8,11 @@
   <div *ngFor="let toDo of toDoForm.get('toDoList')['controls']; let i = index" class="row container"
                 formArrayName="toDoList">
     <div [formGroupName]="i" class="col">
-      <em class="cursor-pointer" (click)="onClickDone(toDo)"><mat-icon>whatshot</mat-icon>
-        <span [ngStyle]="{'text-decoration':toDo.controls.checked.value ? 'line-through' : 'none' }"
+      <em class="cursor-pointer" (click)="onClickDone(toDo)">
+        <mat-icon *ngIf="toDo.controls.checked.value">check_circle_outline</mat-icon>
+        <mat-icon *ngIf="!toDo.controls.checked.value">radio_button_unchecked</mat-icon>
+        <span [ngStyle]="{'text-decoration':toDo.controls.checked.value ? 'line-through' : 'none',
+        'color':toDo.controls.checked.value ? 'green' : 'red'}"
               class="ml-1">{{toDo.controls.toDoContent.value}}</span>
       </em>
     </div>

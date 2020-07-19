@@ -21,6 +21,8 @@ import {StickyNoteComponent} from './components/sticky-note/sticky-note.componen
 import {CoreModule} from '../../@core/core.module';
 import { AddNotesComponent } from './components/add-notes/add-notes.component';
 import { ToDoComponent } from './components/to-do/to-do.component';
+import { NewYorkTimesNewsComponentComponent } from './components/advanced-widgets/new-york-times-news-component/new-york-times-news-component.component';
+import { UpdateProfileModalComponent } from './components/update-profile-modal/update-profile-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ToDoComponent } from './components/to-do/to-do.component';
     WeatherComponent,
     StickyNoteComponent,
     AddNotesComponent,
-    ToDoComponent],
+    ToDoComponent,
+    NewYorkTimesNewsComponentComponent,
+    UpdateProfileModalComponent],
   imports: [
     CommonModule,
     ThemeModule,

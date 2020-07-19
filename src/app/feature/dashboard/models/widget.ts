@@ -9,4 +9,6 @@ export interface Widget {
   x: number;
   title?: string;
   content?: string;
+  toDoTitle?: string;
+  toDoList?: string;
 }

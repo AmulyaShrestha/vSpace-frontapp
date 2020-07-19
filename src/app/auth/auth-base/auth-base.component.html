@@ -28,9 +28,15 @@
                 </mat-form-field>
               </div>
               <div class="col-md-12 mb-3">
-                <a class="w-50 cursor-pointer" (click)="openForgotPasswordModal()">Forgot password?</a>
+                <mat-checkbox color="primary" [(ngModel)]="rememberStatus" [ngModelOptions]="{standalone: true}">Remember me</mat-checkbox>
               </div>
-              <div class="col-md-12 m-4">
+              <div class="col-md-12 mb-3">
+                <a class="w-50 cursor-pointer" (click)="openForgotPasswordModal()">Forgot password?</a>
+                <strong> or </strong>
+                <a class="w-50 cursor-pointer" (click)="continueWithoutLogin()">Continue as guest</a>
+              </div>
+              <hr>
+              <div class="col-md-12 m-3">
                 <button mat-flat-button (click)="loginForm.valid && onSubmit()" color="primary">Login</button>
                 <button mat-button color="primary" (click)="openRegisterForm()">Register</button>
               </div>

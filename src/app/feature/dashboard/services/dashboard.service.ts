@@ -45,9 +45,9 @@ export class DashboardService implements IDashboardService {
       outerMarginBottom: null,
       outerMarginLeft: null,
       mobileBreakpoint: 640,
-      minCols: 1,
-      maxCols: 100,
-      minRows: 1,
+      minCols: 20,
+      maxCols: 20,
+      minRows: 10,
       maxRows: 100,
       maxItemCols: 100,
       minItemCols: 1,
@@ -128,6 +128,18 @@ export class DashboardService implements IDashboardService {
         if (widget.componentName === 'toDo') {
           widget.componentType = ToDoComponent;
         }
+        if (widget.componentName === 'art-news') {
+          widget.componentType = ToDoComponent;
+        }
+        if (widget.componentName === 'science-news') {
+          widget.componentType = ToDoComponent;
+        }
+        if (widget.componentName === 'world-news') {
+          widget.componentType = ToDoComponent;
+        }
+        if (widget.componentName === 'top-news') {
+          widget.componentType = ToDoComponent;
+        }
       });
     });
     this.userDashboards.set(activeUserId, dashboards);
@@ -144,125 +156,137 @@ export class DashboardService implements IDashboardService {
       dashBoards.push({
         id: '1', name: 'Home', user: undefined, widgets: [
           {
-            cols: 6,
+            cols: 9,
             componentName: 'corona-world-table',
             componentType: CoronaWorldTableComponent,
             id: '5',
             name: 'Corona World Statistics',
-            rows: 4,
-            x: 3,
-            y: 4
+            rows: 7,
+            x: 5,
+            y: 7
           },
           {
-            cols: 3,
+            cols: 4,
             componentName: 'weather',
             componentType: WeatherComponent,
             id: '6',
             name: 'Weather',
-            rows: 5,
-            x: 9,
+            rows: 7,
+            x: 16,
             y: 0
           },
           {
-            cols: 9,
+            cols: 16,
             componentName: 'corona-world-map',
             componentType: CoronaWorldMapComponent,
             id: '4',
             name: 'Corona World Statistics',
-            rows: 4,
+            rows: 7,
             x: 0,
             y: 0
           },
           {
-            cols: 3,
+            cols: 5,
             componentName: 'google-calendar',
             componentType: NepaliCalendarComponent,
             id: '1',
             name: 'Calendar',
-            rows: 4,
+            rows: 7,
             x: 0,
-            y: 4
+            y: 7
           },
           {
-            cols: 3,
+            cols: 6,
             componentName: 'youtube',
             componentType: YoutubeComponent,
             id: '3',
             name: 'YouTube',
-            rows: 3,
-            x: 9,
-            y: 5
+            rows: 7,
+            x: 14,
+            y: 7
           },
           {
-            cols: 5,
+            cols: 8,
             componentName: 'clock-analogue',
             componentType: CloclAnalogueComponent,
             id: '2',
             name: 'Clock',
-            rows: 4,
+            rows: 8,
             x: 0,
-            y: 8
+            y: 14
           }]
       });
       dashBoards.push({
         id: '1', name: 'Home', user: undefined, widgets: [
           {
-            cols: 3,
+            cols: 5,
             componentName: 'sticky-notes',
             componentType: StickyNoteComponent,
             id: '5',
             name: 'Notes',
-            rows: 3,
+            rows: 4,
             x: 0,
             y: 0,
           },
           {
-            cols: 2,
+            cols: 4,
             componentName: 'sticky-notes',
             componentType: StickyNoteComponent,
             content: 'The content 3',
             id: '7',
             name: 'Note',
-            rows: 2,
+            rows: 4,
             title: 'The title 3',
-            x: 7,
-            y: 0
+            x: 16,
+            y: 4
           },
           {
-            cols: 2,
+            cols: 3,
             componentName: 'sticky-notes',
             componentType: StickyNoteComponent,
             content: '2',
             id: '7',
             name: 'Note',
-            rows: 2,
+            rows: 5,
             title: '2',
             x: 3,
-            y: 2
+            y: 4
           },
           {
-            cols: 2,
+            cols: 3,
             componentName: 'sticky-notes',
             componentType: StickyNoteComponent,
             content: '4',
             id: '7',
             name: 'Note',
-            rows: 2,
+            rows: 3,
             title: '4',
-            x: 9,
-            y: 2
+            x: 11,
+            y: 4
           },
           {
-            cols: 2,
+            cols: 4,
             componentName: 'sticky-notes',
             componentType: StickyNoteComponent,
             content: '5',
             id: '7',
             name: 'Note',
-            rows: 2,
+            rows: 5,
             title: '5',
-            x: 5,
+            x: 6,
             y: 1
+          },
+          {
+            cols: 6,
+            componentName: 'toDo',
+            componentType: ToDoComponent,
+            toDoList: '[{"toDoContent":"You first task goes here","checked":false},{"toDoContent":"The second one being here and...","checked":false},{"toDoContent":"The third one belongs to this place","checked":false}]',
+            id: '8',
+            name: 'To-Dos',
+            rows: 4,
+            toDoTitle: 'Some set of tasks to do',
+            x: 13,
+            y: 0
           }]
       });
       this.userDashboards.set('default', dashBoards);
