@@ -1,0 +1,17 @@
+<div style="height: 100%; overflow: scroll">
+  <mat-card class="cursor-pointer">
+    <mat-card-content *ngFor="let singleNews of newsResults; let i = index">
+      <div class="row">
+        <div class="col-md-4">
+          <img width="100%" [src]="singleNews?.multimedia[0]?.url" alt="">
+        </div>
+        <div class="col-md-8">
+          <h5>{{singleNews.title}}</h5>
+          <p>{{singleNews.abstract}}</p>
+          <a [href]="singleNews.url">Read more...</a>
+        </div>
+      </div>
+      <hr>
+    </mat-card-content>
+  </mat-card>
+</div>
