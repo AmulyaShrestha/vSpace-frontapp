@@ -1,6 +1,7 @@
 @import "./app/@theme/theme";
 @include mat-core();
 @include angular-material-theme($app-theme);
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
