@@ -129,6 +129,7 @@ export class DashboardComponent implements OnInit {
 
   public onSelectHomeDashboard(): void {
     this.isStickyNoteMode = false;
+    this.stickyNoteModalOpened = false;
     this.dashboard = this.dashboardService.getUserDashBoards(this.activeUserId)[0].widgets;
   }
 
