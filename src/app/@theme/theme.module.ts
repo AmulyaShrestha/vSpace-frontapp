@@ -30,6 +30,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { GhostAnimationComponent } from './designs/ghost-animation/ghost-animation.component';
+import {AgmCoreModule} from '@agm/core';
 
 const MAT_MODULES = [
   MatStepperModule,
@@ -57,7 +58,11 @@ const MAT_MODULES = [
   MatSnackBarModule,
   MatDialogModule,
   MatTooltipModule,
-  MatBottomSheetModule,
+  MatBottomSheetModule
+];
+
+const ADDITIONAL_MODULES = [
+  AgmCoreModule,
   FlexLayoutModule
 ];
 
@@ -72,10 +77,12 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   imports: [
     CommonModule,
-    ...MAT_MODULES
+    ...MAT_MODULES,
+    ...ADDITIONAL_MODULES
   ],
   exports: [
     ...MAT_MODULES,
+    ...ADDITIONAL_MODULES,
     ...COMPONENTS
   ]
 })
