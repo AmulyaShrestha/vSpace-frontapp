@@ -216,7 +216,7 @@ export class DashboardService implements IDashboardService {
             componentType: CloclAnalogueComponent,
             id: '2',
             name: 'Clock',
-            rows: 8,
+            rows: 7,
             x: 0,
             y: 14
           }]

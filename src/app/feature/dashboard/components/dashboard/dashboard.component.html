@@ -115,7 +115,7 @@
 
 <div class="h-100 w-100" [ngClass]="{'bg-dark': !darkModeEnabled, 'bg-secondary': darkModeEnabled}">
 
-  <div #stickyModal>
+  <div #stickyModal class="mt-2">
     <mat-card class="container mb-4 pt-0" *ngIf="stickyNoteModalOpened" [@inOutAnimation]>
       <mat-card-content>
         <mat-tab-group mat-stretch-tabs dynamicHeight>
@@ -217,7 +217,7 @@
     </mat-card>
   </div>
 
-  <div #mapsModal class="container" *ngIf="mapsModalOpened" [@inOutAnimation]>
+  <div #mapsModal class="container mt-2" *ngIf="mapsModalOpened" [@inOutAnimation]>
     <mat-card>
       <div class="row">
         <div class="col-md-10">
