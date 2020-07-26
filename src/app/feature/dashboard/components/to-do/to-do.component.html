@@ -3,7 +3,7 @@
     <mat-label>Suited Title...</mat-label>
     <input (change)="valueChanged()" formControlName="title" matInput placeholder="Placeholder">
     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    <mat-hint>The content</mat-hint>
+    <mat-hint>Your list:</mat-hint>
   </mat-form-field>
   <div *ngFor="let toDo of toDoForm.get('toDoList')['controls']; let i = index" class="row container"
                 formArrayName="toDoList">
@@ -12,7 +12,7 @@
         <mat-icon *ngIf="toDo.controls.checked.value">check_circle_outline</mat-icon>
         <mat-icon *ngIf="!toDo.controls.checked.value">radio_button_unchecked</mat-icon>
         <span [ngStyle]="{'text-decoration':toDo.controls.checked.value ? 'line-through' : 'none',
-        'color':toDo.controls.checked.value ? 'green' : 'red'}"
+        'color':toDo.controls.checked.value ? 'lime' : 'red'}"
               class="ml-1">{{toDo.controls.toDoContent.value}}</span>
       </em>
     </div>

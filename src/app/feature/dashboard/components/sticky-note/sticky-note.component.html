@@ -5,5 +5,8 @@
     <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
     <mat-hint>The content</mat-hint>
   </mat-form-field>
-    <textarea (change)="valueChanged()" style="height: 60%; width: 100%;" class="px-1" formControlName="content"></textarea>
+  <mat-form-field class="px-1" style="height: 60%">
+    <mat-label>Your content...</mat-label>
+    <textarea matInput (change)="valueChanged()" formControlName="content"></textarea>
+  </mat-form-field>
 </form>
