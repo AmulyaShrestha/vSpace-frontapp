@@ -10,6 +10,8 @@ import {WeatherComponent} from '../components/weather/weather.component';
 import {User} from '../../../auth/model/User';
 import {StickyNoteComponent} from '../components/sticky-note/sticky-note.component';
 import {ToDoComponent} from '../components/to-do/to-do.component';
+import {LocationViewerComponent} from '../components/advanced-widgets/location-viewer/location-viewer.component';
+import {NewYorkTimesNewsComponentComponent} from '../components/advanced-widgets/new-york-times-news-component/new-york-times-news-component.component';
 
 interface IDashboardService {
   getUserDashBoards(user: User): Array<Dashboard>;
@@ -129,16 +131,19 @@ export class DashboardService implements IDashboardService {
           widget.componentType = ToDoComponent;
         }
         if (widget.componentName === 'art-news') {
-          widget.componentType = ToDoComponent;
+          widget.componentType = NewYorkTimesNewsComponentComponent;
         }
         if (widget.componentName === 'science-news') {
-          widget.componentType = ToDoComponent;
+          widget.componentType = NewYorkTimesNewsComponentComponent;
         }
         if (widget.componentName === 'world-news') {
-          widget.componentType = ToDoComponent;
+          widget.componentType = NewYorkTimesNewsComponentComponent;
         }
         if (widget.componentName === 'top-news') {
-          widget.componentType = ToDoComponent;
+          widget.componentType = NewYorkTimesNewsComponentComponent;
+        }
+        if (widget.componentName === 'maps') {
+          widget.componentType = LocationViewerComponent;
         }
       });
     });

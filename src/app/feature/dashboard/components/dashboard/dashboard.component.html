@@ -36,6 +36,10 @@
       <mat-icon>subtitles</mat-icon>
       <span>News</span>
     </button>
+    <button mat-menu-item (click)="openMapsModal()">
+      <mat-icon>map</mat-icon>
+      <span>Google Map</span>
+    </button>
   </mat-menu>
 
   <mat-menu #newsCategory="matMenu">
@@ -84,12 +88,20 @@
     </button>
   </mat-menu>
 
-  <button (click)="onClick_SaveUserDashboardsToLocalStorage()"
-          matTooltip="Save current state" class="float-right" color="success" mat-fab>
-    <mat-icon>save</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="settingsMenu" mat-raised-button>
+    <mat-icon>more_vert</mat-icon>
   </button>
+  <mat-menu #settingsMenu="matMenu">
+    <button mat-menu-item (click)="onClick_SaveUserDashboardsToLocalStorage()">
+      <mat-icon>save</mat-icon>
+      <span>Save dashboard</span>
+    </button>
+    <button mat-menu-item>
+      <mat-slide-toggle [(ngModel)]="darkModeEnabled" (click)="$event.stopPropagation();" (toggleChange)="setTheme()">Dark mode</mat-slide-toggle>
+    </button>
+  </mat-menu>
 
-  <div class="nav">
+  <div class="nav" [ngClass]="{'bg-dark': darkModeEnabled, 'bg-light': !darkModeEnabled}">
     <input type="checkbox">
     <span></span>
     <span></span>
@@ -101,7 +113,7 @@
 
 </div>
 
-<div class="h-100 w-100" style="background: #4a4163">
+<div class="h-100 w-100" [ngClass]="{'bg-dark': !darkModeEnabled, 'bg-secondary': darkModeEnabled}">
 
   <div #stickyModal>
     <mat-card class="container mb-4 pt-0" *ngIf="stickyNoteModalOpened" [@inOutAnimation]>
@@ -205,30 +217,78 @@
     </mat-card>
   </div>
 
+  <div #mapsModal class="container" *ngIf="mapsModalOpened" [@inOutAnimation]>
+    <mat-card>
+      <div class="row">
+        <div class="col-md-10">
+          <mat-form-field class="w-100">
+            <mat-label>Location coordinates</mat-label>
+            <input #locationValue [(ngModel)]="locationCoordinates" matInput placeholder="Location coordinates">
+            <mat-icon (click)="findLocation(locationValue.value)" class="cursor-pointer" matSuffix>map</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-md-1">
+          <button matTooltip="Add location" (click)="addMapsWidget()" mat-fab>
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div class="col-md-1">
+          <button matTooltip="close" color="warn" (click)="mapsModalOpened = false" mat-fab>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-card-content>
+        <agm-map (mapClick)="placeMaker($event.coords.lat,$event.coords.lng)"
+                 [clickableIcons]='false'
+                 [fullscreenControl]='true'
+                 [latitude]="latitude"
+                 [longitude]="longitude"
+                 [mapTypeControl]='true'
+                 [zoom]="zoom"
+                 style="height: 400px; width: 100%;">
+          <agm-marker [latitude]="markerLatitude" [longitude]="markerLongitude">
+            <agm-info-window [isOpen]="infoWindowOpen">
+              {{addressLabel}}
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <div class="gridster-container">
     <gridster [options]="options">
       <gridster-item *ngFor="let widget of dashboard; let i = index" [item]="widget">
-        <div class="drag-handler widget-header">
-          <div class="item-buttons widget-header-buttons">
-            <div class="float-left header-margin-left"></div>
-            <h3 *ngIf="widget.name">{{widget.name}}</h3></div>
-          <div class="float-right header-margin-right">
-            <h4>
-              <a (mousedown)="onClick_configureItem($event, widget)"
-                 class="widget-header-btn"><mat-icon class="pt-2 mr-1">settings</mat-icon></a>
+        <mat-card class="h-100">
+          <mat-card-header class="drag-handler widget-header">
+            <div class="row w-100">
+              <div class="col-md-7">
+                <h3 *ngIf="widget.name">{{widget.name}}</h3>
+              </div>
 
-              <a (mousedown)="onClick_removeItem($event, widget)"
-                 class="widget-header-btn"><mat-icon class="pt-2">cancel</mat-icon></a>
-            </h4>
-          </div>
-        </div>
-        <div style="height: 100%; margin: 5px">
-          <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
-                       [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i,
+              <div class="col-md-5 text-right">
+                <h4>
+                  <a (mousedown)="onClick_configureItem($event, widget)"
+                     class="widget-header-btn"><mat-icon class="mr-1">settings</mat-icon></a>
+
+                  <a (mousedown)="onClick_removeItem($event, widget)"
+                     class="widget-header-btn"><mat-icon>cancel</mat-icon></a>
+                </h4>
+              </div>
+            </div>
+          </mat-card-header>
+          <mat-card-content class="h-100">
+              <ndc-dynamic [ndcDynamicComponent]="widget.componentType"
+                           [ndcDynamicInputs]="{noteObject: {title: widget.title, content: widget.content}, activeWidgetIndex: i,
                        toDoObject: {title: widget.toDoTitle, toDoList: widget.toDoList}, activeWidgetIndexForToDo: i,
+                       locationCoordinates: widget.locationCoordinates,
                        newsCategory: widget.componentName}"
-                       [ndcDynamicOutputs]="outputs"></ndc-dynamic>
-        </div>
+                           [ndcDynamicOutputs]="outputs"></ndc-dynamic>
+          </mat-card-content>
+        </mat-card>
+<!--        <div class="drag-handler widget-header"></div>-->
       </gridster-item>
     </gridster>
   </div>

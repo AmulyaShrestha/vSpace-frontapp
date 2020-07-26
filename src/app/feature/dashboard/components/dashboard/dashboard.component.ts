@@ -20,6 +20,10 @@ import {NewYorkTimesNewsComponentComponent} from '../advanced-widgets/new-york-t
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
 import {UpdateProfileModalComponent} from '../update-profile-modal/update-profile-modal.component';
+import {LocationViewerComponent} from '../advanced-widgets/location-viewer/location-viewer.component';
+import {ColorSchemeService} from '../../../../@theme/service/color-scheme.service';
+
+declare let google: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -70,11 +74,27 @@ export class DashboardComponent implements OnInit {
   activeUserId;
   activeUser: User = new User();
   isStickyNoteMode = false;
-  stickyNoteModalOpened = false;
   stickyNoteForm: FormGroup;
   toDoForm: FormGroup;
 
+  stickyNoteModalOpened = false;
+  mapsModalOpened = false;
+
+  // darkMode --
+  darkModeEnabled = false;
+
+  // Maps properties --
+  zoom = 10;
+  latitude = 27.666921;
+  longitude = 85.350011;
+  markerLatitude = null;
+  markerLongitude = null;
+  infoWindowOpen: any;
+  addressLabel: any;
+  locationCoordinates: any;
+
   constructor(private dashboardService: DashboardService,
+              private colorSchemeService: ColorSchemeService,
               public navService: NavService,
               private formBuilder: FormBuilder,
               private router: Router,
@@ -135,6 +155,7 @@ export class DashboardComponent implements OnInit {
 
   public onSelectStickyNotes(): void {
     this.isStickyNoteMode = true;
+    this.mapsModalOpened = false;
     this.dashboard = this.dashboardService.getUserDashBoards(this.activeUserId)[1].widgets;
   }
 
@@ -335,6 +356,25 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  openMapsModal() {
+    this.mapsModalOpened = true;
+  }
+
+  addMapsWidget() {
+    this.dashboard.push({
+      id: '9',
+      name: 'Maps',
+      componentName: 'maps',
+      componentType: LocationViewerComponent,
+      cols: 7,
+      rows: 7,
+      y: 0,
+      x: 0,
+      locationCoordinates: this.locationCoordinates
+    });
+    this.mapsModalOpened = false;
+  }
+
   openUpdatedStickyModal() {
     this.buildStickyNoteAndToDoForm();
     this.stickyNoteModalOpened = true;
@@ -383,6 +423,55 @@ export class DashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(UpdateProfileModalComponent, {
       data: this.activeUser
     });
+  }
+
+  // Maps functions --
+  findLocation(coordinate) {
+    const latLang = coordinate.split(',', 2);
+    console.log(+latLang[0], +latLang[1]);
+    this.placeMaker(+latLang[0], +latLang[1]);
+  }
+
+  placeMaker(latitude, longitude) {
+    this.infoWindowOpen = false;
+    this.zoom = 10;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.markerLatitude = this.latitude;
+    this.markerLongitude = this.longitude;
+    this.locationCoordinates = this.latitude + ',' + this.longitude;
+    this.getAddress(this.latitude, this.longitude);
+  }
+
+  getAddress(latitude: number, longitude: number) {
+    if (navigator.geolocation) {
+      const geocoder = new google.maps.Geocoder();
+      const latlng = new google.maps.LatLng(latitude, longitude);
+      const request = {latLng: latlng};
+      geocoder.geocode(request, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+          const result = results[0];
+          const rsltAdrComponent = result.formatted_address;
+          if (rsltAdrComponent != null) {
+            this.addressLabel = rsltAdrComponent;
+
+            this.infoWindowOpen = true;
+          } else {
+            this.addressLabel = null;
+          }
+        } else {
+          this.addressLabel = null;
+        }
+      });
+    }
+  }
+
+  setTheme() {
+    let theme = 'dark';
+    if (this.darkModeEnabled) {
+      theme = 'light';
+    }
+    this.colorSchemeService.update(theme);
   }
 
   logOut() {

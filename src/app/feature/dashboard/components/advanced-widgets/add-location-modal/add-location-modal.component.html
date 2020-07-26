@@ -1,0 +1,20 @@
+<mat-form-field class="w-100">
+  <mat-label>Location coordinates</mat-label>
+  <input #locationValue [(ngModel)]="locationCoordinates" matInput placeholder="Location coordinates"
+         (change)="findLocation(locationValue.value)">
+  <mat-icon matSuffix>map</mat-icon>
+</mat-form-field>
+<agm-map (mapClick)="placeMaker($event.coords.lat,$event.coords.lng)"
+         [clickableIcons]='false'
+         [fullscreenControl]='true'
+         [latitude]="latitude"
+         [longitude]="longitude"
+         [mapTypeControl]='true'
+         [zoom]="zoom"
+         style="height: 400px; width: 100%;">
+  <agm-marker [latitude]="markerLatitude" [longitude]="markerLongitude">
+    <agm-info-window [isOpen]="infoWindowOpen">
+      {{addressLabel}}
+    </agm-info-window>
+  </agm-marker>
+</agm-map>

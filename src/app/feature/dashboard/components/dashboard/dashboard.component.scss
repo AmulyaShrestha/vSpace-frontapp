@@ -2,7 +2,7 @@ gridster {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #4a4163;
+  background-color: transparent;
 }
 
 :host {
@@ -28,7 +28,6 @@ gridster {
 }
 
 .widget-header {
-  background-color: #eeeeee;
   cursor: move;
 }
 
@@ -38,10 +37,6 @@ gridster {
 
 .header-margin-left {
   margin-left: 5px;
-}
-
-.header-margin-right {
-  margin-right: 5px;
 }
 
 .widget-header-buttons {
@@ -57,7 +52,7 @@ app-nomination-widget {
   margin: 0;
   padding: 0;
   min-height: 100px;
-  background-color: #4a4163;
+  background-color: #676568;
   font-family: 'Open Sans', Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -74,7 +69,6 @@ app-nomination-widget {
 
 .nav {
   position: relative;
-  background-color: #fff;
   padding: 20px;
   transition: 0.5s;
   border-radius: 50px;
@@ -152,7 +146,6 @@ app-nomination-widget {
 
 // Hover effects --
 .underlined {
-  color: black;
   flex: 1;
   font-size: 1.5em;
   line-height: 1.5;

@@ -23,6 +23,8 @@ import { AddNotesComponent } from './components/add-notes/add-notes.component';
 import { ToDoComponent } from './components/to-do/to-do.component';
 import { NewYorkTimesNewsComponentComponent } from './components/advanced-widgets/new-york-times-news-component/new-york-times-news-component.component';
 import { UpdateProfileModalComponent } from './components/update-profile-modal/update-profile-modal.component';
+import { LocationViewerComponent } from './components/advanced-widgets/location-viewer/location-viewer.component';
+import { AddLocationModalComponent } from './components/advanced-widgets/add-location-modal/add-location-modal.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { UpdateProfileModalComponent } from './components/update-profile-modal/u
     AddNotesComponent,
     ToDoComponent,
     NewYorkTimesNewsComponentComponent,
-    UpdateProfileModalComponent],
+    UpdateProfileModalComponent,
+    LocationViewerComponent,
+    AddLocationModalComponent],
   imports: [
     CommonModule,
     ThemeModule,

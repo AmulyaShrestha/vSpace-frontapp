@@ -6,6 +6,8 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {HttpClientModule} from '@angular/common/http';
+import {AgmCoreModule} from '@agm/core';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,10 @@ import {HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: environment.GOOGLE_MAP_API_KEY
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
