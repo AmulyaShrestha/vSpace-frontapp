@@ -3,17 +3,16 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../../@core/authentication.service';
 import {ToastrService} from 'ngx-toastr';
 import {Dashboard} from '../../../feature/dashboard/models';
-import {CoronaWorldTableComponent} from '../../../feature/dashboard/components/corona-world-table/corona-world-table.component';
-import {WeatherComponent} from '../../../feature/dashboard/components/weather/weather.component';
-import {CoronaWorldMapComponent} from '../../../feature/dashboard/components/corona-world-map/corona-world-map.component';
-import {NepaliCalendarComponent} from '../../../feature/dashboard/components/nepali-calendar/nepali-calendar.component';
-import {YoutubeComponent} from '../../../feature/dashboard/components/youtube/youtube.component';
-import {CloclAnalogueComponent} from '../../../feature/dashboard/components/clock-analogue/clocl-analogue.component';
+import {CoronaWorldTableComponent} from '../../../feature/dashboard/components/simple-widgets/corona-world-table/corona-world-table.component';
+import {WeatherComponent} from '../../../feature/dashboard/components/simple-widgets/weather/weather.component';
+import {CoronaWorldMapComponent} from '../../../feature/dashboard/components/simple-widgets/corona-world-map/corona-world-map.component';
+import {NepaliCalendarComponent} from '../../../feature/dashboard/components/simple-widgets/nepali-calendar/nepali-calendar.component';
+import {YoutubeComponent} from '../../../feature/dashboard/components/simple-widgets/youtube/youtube.component';
+import {CloclAnalogueComponent} from '../../../feature/dashboard/components/simple-widgets/clock-analogue/clocl-analogue.component';
 import {Router} from '@angular/router';
 import {MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {StickyNoteComponent} from '../../../feature/dashboard/components/sticky-note/sticky-note.component';
-import {User} from '../../model/User';
-import {ToDoComponent} from "../../../feature/dashboard/components/to-do/to-do.component";
+import {ToDoComponent} from '../../../feature/dashboard/components/to-do/to-do.component';
 
 @Component({
   selector: 'app-register-client',
