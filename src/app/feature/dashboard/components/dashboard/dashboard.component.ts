@@ -408,10 +408,12 @@ export class DashboardComponent implements OnInit {
   }
 
   bulkDelete() {
-    this.bulkDeleteWidgetIndexArray.forEach((widget) => {
-      this.dashboard.splice(this.dashboard.indexOf(widget), 1);
-    });
-    this.bulkDeleteWidgetIndexArray = [];
+    if (confirm('Are you sure you want to bulk delete these component?')) {
+      this.bulkDeleteWidgetIndexArray.forEach((widget) => {
+        this.dashboard.splice(this.dashboard.indexOf(widget), 1);
+      });
+      this.bulkDeleteWidgetIndexArray = [];
+    }
   }
 
   onCheckWidget(widget, event: MatCheckboxChange) {
