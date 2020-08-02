@@ -31,6 +31,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { GhostAnimationComponent } from './designs/ghost-animation/ghost-animation.component';
 import {AgmCoreModule} from '@agm/core';
+import {ColorPickerModule} from 'ngx-color-picker';
 
 const MAT_MODULES = [
   MatStepperModule,
@@ -63,7 +64,8 @@ const MAT_MODULES = [
 
 const ADDITIONAL_MODULES = [
   AgmCoreModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  ColorPickerModule
 ];
 
 const COMPONENTS = [

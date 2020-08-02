@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Dashboard, DashboardOptions, Widget} from '../models';
 import {CompactType, GridType} from 'angular-gridster2';
-import {NepaliCalendarComponent} from '../components/nepali-calendar/nepali-calendar.component';
-import {CloclAnalogueComponent} from '../components/clock-analogue/clocl-analogue.component';
-import {YoutubeComponent} from '../components/youtube/youtube.component';
-import {CoronaWorldMapComponent} from '../components/corona-world-map/corona-world-map.component';
-import {CoronaWorldTableComponent} from '../components/corona-world-table/corona-world-table.component';
-import {WeatherComponent} from '../components/weather/weather.component';
+import {NepaliCalendarComponent} from '../components/simple-widgets/nepali-calendar/nepali-calendar.component';
+import {CloclAnalogueComponent} from '../components/simple-widgets/clock-analogue/clocl-analogue.component';
+import {YoutubeComponent} from '../components/simple-widgets/youtube/youtube.component';
+import {CoronaWorldMapComponent} from '../components/simple-widgets/corona-world-map/corona-world-map.component';
+import {CoronaWorldTableComponent} from '../components/simple-widgets/corona-world-table/corona-world-table.component';
+import {WeatherComponent} from '../components/simple-widgets/weather/weather.component';
 import {User} from '../../../auth/model/User';
 import {StickyNoteComponent} from '../components/sticky-note/sticky-note.component';
 import {ToDoComponent} from '../components/to-do/to-do.component';
