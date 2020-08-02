@@ -74,7 +74,7 @@
 
   <button *ngIf="activeUserId == 'default'" routerLink="/auth" mat-raised-button style="right: 80px">Sign In</button>
 
-  <button mat-raised-button style="right: 160px" color="warn" (click)="bulkDelete()">Delete all</button>
+  <button *ngIf="bulkDeleteWidgetIndexArray.length > 0" mat-raised-button style="right: 160px" color="warn" (click)="bulkDelete()">Delete all</button>
 
   <mat-menu #profileOptions="matMenu">
     <h4 mat-menu-item>
