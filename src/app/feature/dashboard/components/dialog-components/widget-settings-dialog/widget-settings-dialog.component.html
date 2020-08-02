@@ -1,0 +1,19 @@
+<div class="h-100">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Suited Title...</mat-label>
+    <input [(ngModel)]="item.name" matInput placeholder="Suitable card title">
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+  </mat-form-field>
+  <hr>
+  <h5>Pick a color</h5>
+  <span [style.background]="item.color"
+        [cpToggle]="true"
+        [cpDialogDisplay]="'inline'"
+        [(colorPicker)]="item.color"></span>
+  <hr>
+  <div class="w-100 text-center">
+    <button mat-fab (click)="onSave()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</div>
