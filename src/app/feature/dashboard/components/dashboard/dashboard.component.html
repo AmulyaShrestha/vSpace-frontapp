@@ -1,4 +1,4 @@
-<div class="nav-body">
+<div class="nav-body" [ngClass]="{'default-nav-color': !darkModeEnabled, 'dark-nav-color': darkModeEnabled}">
 
   <button [matMenuTriggerFor]="menu" *ngIf="!isStickyNoteMode" style="left: 10px" mat-fab color="success">
     <mat-icon>apps</mat-icon>
@@ -74,6 +74,8 @@
 
   <button *ngIf="activeUserId == 'default'" routerLink="/auth" mat-raised-button style="right: 80px">Sign In</button>
 
+  <button mat-raised-button style="right: 160px" color="warn" (click)="bulkDelete()">Delete all</button>
+
   <mat-menu #profileOptions="matMenu">
     <h4 mat-menu-item>
       <span class="press-2p">{{activeUser.username | uppercase}},Sup?</span>
@@ -113,7 +115,7 @@
 
 </div>
 
-<div class="h-100 w-100" [ngClass]="{'bg-dark': !darkModeEnabled, 'bg-secondary': darkModeEnabled}">
+<div class="h-100 w-100 bg-secondary">
 
   <div #stickyModal class="mt-2">
     <mat-card class="container mb-4 pt-0" *ngIf="stickyNoteModalOpened" [@inOutAnimation]>
@@ -261,7 +263,7 @@
   <div class="gridster-container">
     <gridster [options]="options">
       <gridster-item *ngFor="let widget of dashboard; let i = index" [item]="widget">
-        <mat-card class="h-100">
+        <mat-card class="h-100" [style.background]="widget.color">
           <mat-card-header class="drag-handler widget-header">
             <div class="row w-100">
               <div class="col-md-7">
@@ -270,6 +272,7 @@
 
               <div class="col-md-5 text-right">
                 <h4>
+                  <mat-checkbox class="mr-2" (change)="onCheckWidget(widget, $event)"></mat-checkbox>
                   <a (mousedown)="onClick_configureItem($event, widget)"
                      class="widget-header-btn"><mat-icon class="mr-1">settings</mat-icon></a>
 

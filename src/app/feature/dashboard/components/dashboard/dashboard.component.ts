@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, TemplateRef} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, TemplateRef} from '@angular/core';
 import {DashboardService} from '../../services/dashboard.service';
 import {DisplayGrid, GridsterConfig, GridsterItem} from 'angular-gridster2';
-import {NepaliCalendarComponent} from '../nepali-calendar/nepali-calendar.component';
-import {CloclAnalogueComponent} from '../clock-analogue/clocl-analogue.component';
-import {YoutubeComponent} from '../youtube/youtube.component';
-import {CoronaWorldMapComponent} from '../corona-world-map/corona-world-map.component';
-import {CoronaWorldTableComponent} from '../corona-world-table/corona-world-table.component';
-import {WeatherComponent} from '../weather/weather.component';
+import {NepaliCalendarComponent} from '../simple-widgets/nepali-calendar/nepali-calendar.component';
+import {CloclAnalogueComponent} from '../simple-widgets/clock-analogue/clocl-analogue.component';
+import {YoutubeComponent} from '../simple-widgets/youtube/youtube.component';
+import {CoronaWorldMapComponent} from '../simple-widgets/corona-world-map/corona-world-map.component';
+import {CoronaWorldTableComponent} from '../simple-widgets/corona-world-table/corona-world-table.component';
+import {WeatherComponent} from '../simple-widgets/weather/weather.component';
 import {NavService} from '../../../../@theme/service/nav.service';
 import {StickyNoteComponent} from '../sticky-note/sticky-note.component';
 import {Router} from '@angular/router';
@@ -19,9 +19,11 @@ import {ToDoComponent} from '../to-do/to-do.component';
 import {NewYorkTimesNewsComponentComponent} from '../advanced-widgets/new-york-times-news-component/new-york-times-news-component.component';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
-import {UpdateProfileModalComponent} from '../update-profile-modal/update-profile-modal.component';
+import {UpdateProfileModalComponent} from '../dialog-components/update-profile-modal/update-profile-modal.component';
 import {LocationViewerComponent} from '../advanced-widgets/location-viewer/location-viewer.component';
 import {ColorSchemeService} from '../../../../@theme/service/color-scheme.service';
+import {WidgetSettingsDialogComponent} from '../dialog-components/widget-settings-dialog/widget-settings-dialog.component';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 declare let google: any;
 
@@ -69,7 +71,6 @@ export class DashboardComponent implements OnInit {
     }
   };
   private resizeEvent: EventEmitter<any> = new EventEmitter<any>();
-  private configureEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   activeUserId;
   activeUser: User = new User();
@@ -79,6 +80,9 @@ export class DashboardComponent implements OnInit {
 
   stickyNoteModalOpened = false;
   mapsModalOpened = false;
+
+  // Bulk delete --
+  bulkDeleteWidgetIndexArray = [];
 
   // darkMode --
   darkModeEnabled = false;
@@ -100,7 +104,8 @@ export class DashboardComponent implements OnInit {
               private router: Router,
               private dialog: MatDialog,
               private authService: AuthenticationService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private changeDetectionRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -143,8 +148,9 @@ export class DashboardComponent implements OnInit {
   onClick_configureItem($event, item): void {
     $event.preventDefault();
     $event.stopPropagation();
-    this.showConfig = !this.showConfig;
-    this.configureEvent.emit(this.showConfig);
+    const dialogRef = this.dialog.open(WidgetSettingsDialogComponent, {
+      data: item
+    });
   }
 
   public onSelectHomeDashboard(): void {
@@ -401,6 +407,23 @@ export class DashboardComponent implements OnInit {
     (this.toDoForm.get('toDoList') as FormArray).removeAt(index);
   }
 
+  bulkDelete() {
+    this.bulkDeleteWidgetIndexArray.forEach((widget) => {
+      this.dashboard.splice(this.dashboard.indexOf(widget), 1);
+    });
+    this.bulkDeleteWidgetIndexArray = [];
+  }
+
+  onCheckWidget(widget, event: MatCheckboxChange) {
+    if (event.checked) {
+      this.bulkDeleteWidgetIndexArray.push(widget);
+    } else {
+      this. bulkDeleteWidgetIndexArray = this.bulkDeleteWidgetIndexArray.filter(widgetIndexValue =>
+        this.dashboard.indexOf(widget) !== this.dashboard.indexOf(widgetIndexValue)
+      );
+    }
+  }
+
   public onClick_SaveUserDashboardsToLocalStorage(): void {
     this.dashboardService.saveUserDashBoards(this.activeUserId);
     if (localStorage.getItem('userId') === 'default'){
@@ -422,6 +445,9 @@ export class DashboardComponent implements OnInit {
   openUpdateProfileModal() {
     const dialogRef = this.dialog.open(UpdateProfileModalComponent, {
       data: this.activeUser
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.changeDetectionRef.markForCheck();
     });
   }
 

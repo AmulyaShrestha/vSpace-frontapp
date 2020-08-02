@@ -1,11 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from '../../../../@core/authentication.service';
+import {AuthenticationService} from '../../../../../@core/authentication.service';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
-import {MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {User} from '../../../../auth/model/User';
+import {User} from '../../../../../auth/model/User';
 
 @Component({
   selector: 'app-update-profile-modal',
